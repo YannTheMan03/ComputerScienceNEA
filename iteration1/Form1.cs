@@ -16,6 +16,7 @@ namespace iteration1
         // Game State Variables
         private bool _isGameOver = false;
         private int _scoreCount = 0;
+        private int _gcCount = 0;
 
         // Player Variables
         private Player _player;
@@ -51,10 +52,9 @@ namespace iteration1
             = "C:\\Users\\yb.2415248\\OneDrive - Hereford Sixth Form College\\Computer Science\\C03 - Project\\Assets\\leaderboard.json";
 
         // Wave Variables
-        private Wave _currentWave;
-        private const int SpawnDelay = 200;
-        private DateTime _lastSpawnTime = DateTime.MinValue;
-        private int _gcCount = 0;
+        private Wave currentWave;
+        private int _currentWaveIndex = 1;
+
 
         // Flags
         private bool _isMovingLeft;
@@ -67,6 +67,7 @@ namespace iteration1
         {
             InitializeComponent();
             ChangeBackground();
+            StartWave(_currentWaveIndex);
         }
 
         // Change Background Image
@@ -172,8 +173,16 @@ namespace iteration1
                 _disposedBullets.Clear();
             }
 
+            // Draw Enemies
+            if (currentWave != null)
+            {
+                foreach (Enemy enemy in currentWave.enemies)
+                {
+                    e.Graphics.DrawImage(enemy.SpriteImage, enemy.PositionX, enemy.PositionY, 50, 50);
+                }
+            }
 
-            
+
 
         }
         
@@ -261,5 +270,16 @@ namespace iteration1
             game_Timer.Stop();
             this.Close();
         }
+
+
+        // Working on waves
+        private void StartWave(int _currentWaveIndex)
+        {
+            currentWave = new Wave(_currentWaveIndex);
+            this.Invalidate();
+        }
+        
+        
+
     }
 }
