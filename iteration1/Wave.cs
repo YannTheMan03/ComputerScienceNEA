@@ -25,7 +25,7 @@ namespace iteration1
         public List<Enemy> enemies { get; private set; }
 
         private Direction _moveDirection = Direction.Right;
-        private int _speed = 2;      // horizontal speed
+        private int _speed = 1;      // horizontal speed
         private int _stepDown = 20;  // pixels to move down when hitting edge
         private int _screenWidth = 400; // your form width
 
@@ -36,12 +36,12 @@ namespace iteration1
         {
             switch (waveNumber)
             {
-                case 1: _enemyCount = 4; _rowCount = 1; break;
-                case 2: _enemyCount = 8; _rowCount = 2; break;
-                case 3: _enemyCount = 12; _rowCount = 3; break;
-                case 4: _enemyCount = 16; _rowCount = 4; break;
-                case 5: _enemyCount = 20; _rowCount = 5; break;
-                default: _enemyCount = 4; _rowCount = 1; break;
+                case 1: _enemyCount = 4; _rowCount = 1; _speed = 1; break;
+                case 2: _enemyCount = 8; _rowCount = 2; _speed = 2; break;
+                case 3: _enemyCount = 12; _rowCount = 3; _speed = 2; break;
+                case 4: _enemyCount = 16; _rowCount = 4; _speed = 3; break;
+                case 5: _enemyCount = 20; _rowCount = 5; _speed = 3; break;
+                default: _enemyCount = 4; _rowCount = 1; _speed = 1; break;
             }
             enemies = new List<Enemy>();
             SpawnEnemies(_enemyCount, _rowCount);
@@ -57,7 +57,7 @@ namespace iteration1
             int enemyHeight = Properties.Resources.enemyPng.Height;
 
 
-            int enemiesPerRow = Math.Min(enemyCount, screenWidth / (enemyWidth + spacingX));
+            int enemiesPerRow = 6;
             int totalRowWidth = enemiesPerRow * enemyWidth + (enemiesPerRow - 1) * spacingX;
             int startX = (screenWidth - totalRowWidth) / 2;
             int startY = 50;
