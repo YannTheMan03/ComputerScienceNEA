@@ -24,14 +24,15 @@ namespace iteration1
         protected int _rowCount = 0;
         public List<Enemy> enemies { get; private set; }
 
+        // Private variables
         private Direction _moveDirection = Direction.Right;
-        private int _speed = 1;      // horizontal speed
-        private int _stepDown = 20;  // pixels to move down when hitting edge
-        private int _screenWidth = 400; // your form width
+        private int _speed = 1;      
+        private int _stepDown = 20; 
+        private int _screenWidth = 400; 
 
 
 
-
+        // Choosing the wave
         public Wave(int waveNumber)
         {
             switch (waveNumber)
@@ -48,6 +49,7 @@ namespace iteration1
 
 
         }
+        // Spawing the enemies
         public void SpawnEnemies(int enemyCount, int rowCount)
         {
             int spacingX = 10;
@@ -77,6 +79,8 @@ namespace iteration1
                 }
             }
         }
+
+        // Updating the positions.
         public void Update()
         {
             bool hittingEdge = false;
@@ -100,6 +104,8 @@ namespace iteration1
             }
             enemies.RemoveAll(e => !e.IsAlive);
         }
+
+        // Drawing to the screen
         public void Draw(Graphics g)
         {
             foreach (var enemy in enemies)
