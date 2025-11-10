@@ -32,7 +32,10 @@ namespace iteration1
         private int _screenWidth = 400;
 
         private Random rnd = new Random();
-        private int _randomNum;
+
+        public List<Bullet> EnemyBullets {  get; private set; }
+        public List<Bullet> DisposedEnemyBullets { get; set; }
+        public Bullet enemyBulletInstance { get; set; }
 
 
         // Choosing the wave
@@ -48,6 +51,8 @@ namespace iteration1
                 default: _enemyCount = 4; _rowCount = 1; _speed = 1; break;
             }
             enemies = new List<Enemy>();
+            EnemyBullets = new List<Bullet>();
+            DisposedEnemyBullets = new List<Bullet>();
             SpawnEnemies(_enemyCount, _rowCount);
 
 
@@ -105,7 +110,21 @@ namespace iteration1
                     enemy.PositionY += _stepDown;
                 }
             }
-            enemies.RemoveAll(e => !e.IsAlive);           
+            enemies.RemoveAll(e => !e.IsAlive);  
+            foreach(var bullet in EnemyBullets)
+            {
+                bullet.PositionY += 5;
+            }
+            EnemyBullets.RemoveAll(b => b.PositionY > 600);
+            foreach (var enemy in enemies)
+            {
+                int shootChance = rnd.Next(0, 1000); // ~0.5% chance per update
+                if (shootChance < 5)
+                {
+                    Bullet newBullet = new Bullet(Properties.Resources.bulletImage___Copy, enemy.PositionX , enemy.PositionY);
+                    EnemyBullets.Add(newBullet);
+                }
+            }
         }
 
         // Drawing to the screen
@@ -113,13 +132,12 @@ namespace iteration1
         {
             foreach (var enemy in enemies)
             {
-                _randomNum = rnd.Next(1, 101);
-                enemy.Draw(g);
-                if(_randomNum >= 75)
-                {
-                    enemy.Shoot(g, enemy.PositionX, enemy.PositionY);
-                }
-            }                        
+                enemy.Draw(g);      
+            }  
+            foreach (var bullet in EnemyBullets)
+            {
+                bullet.Draw(g);
+            }
         }
     }      
 }

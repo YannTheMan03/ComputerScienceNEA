@@ -179,10 +179,10 @@ namespace iteration1
                     currentWave.enemies.Remove(enemy);
                     _playerLivesLeft -= 1;
                 }
-                currentWave?.Draw(e.Graphics);
+                currentWave?.Draw(G);
             }
-           
-
+            
+ 
 
 
         }
@@ -209,9 +209,6 @@ namespace iteration1
                 GameOver();
             }
 
-            // Collision Checking
-            
-
             // Remove Bullets
             foreach (Bullet bullet in _disposedBullets) _bullets.Remove(bullet);
             _disposedBullets.Clear();
@@ -220,18 +217,31 @@ namespace iteration1
             
             if (currentWave != null){
                 currentWave.Update();
-
-                foreach (var bullet in _bullets)
+                foreach (var bullet in _bullets.ToList())
                 {
-                    foreach(var enemy in currentWave.enemies.ToList())
+                    foreach (var enemy in currentWave.enemies.ToList())
                     {
                         if (bullet.HitBox.IntersectsWith(enemy.HitBox))
                         {
                             enemy.TakeDamage(BulletDamage);
-                            _disposedBullets.Add(bullet);
+                            _bullets.Remove(bullet);
                             _scoreCount += 10;
                             break;
                         }
+                    }
+                }
+                foreach (var enemyBullet in currentWave.EnemyBullets.ToList())
+                {
+                    enemyBullet.PositionY += 2; 
+
+                    if (enemyBullet.HitBox.IntersectsWith(_player.HitBox))
+                    {
+                        _playerLivesLeft--;
+                        currentWave.EnemyBullets.Remove(enemyBullet);
+                    }
+                    else if (enemyBullet.PositionY > _formBounds.Height)
+                    {
+                        currentWave.EnemyBullets.Remove(enemyBullet);
                     }
                 }
                 if (currentWave.enemies.Count == 0)
@@ -239,7 +249,6 @@ namespace iteration1
                     _currentWaveIndex++;
                     StartWave(_currentWaveIndex);
                 }
-
             }
 
             // Background Change
