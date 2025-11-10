@@ -203,7 +203,7 @@ namespace iteration1
             foreach (Bullet bullet in _bullets) bullet.PositionY += BulletVelocity;
 
             // End game
-            if (_playerLivesLeft <= 0)
+            if ((_playerLivesLeft <= 0 )||( _currentWaveIndex == 6))
             {
                 game_Timer.Stop();
                 GameOver();
