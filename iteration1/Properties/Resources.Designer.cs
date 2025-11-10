@@ -113,6 +113,16 @@ namespace iteration1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bulletImage___Copy {
+            get {
+                object obj = ResourceManager.GetObject("bulletImage - Copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap enemyPng {
             get {
                 object obj = ResourceManager.GetObject("enemyPng", resourceCulture);
