@@ -73,10 +73,15 @@ namespace iteration1
         {
             _background = new Image[]
             {
-                Properties.Resources.backGround1,
-                Properties.Resources.backGround2,
-                Properties.Resources.backGround3,
-                Properties.Resources.backGround4
+                Properties.Resources.BG1,
+                Properties.Resources.BG2,
+                Properties.Resources.BG3,
+                Properties.Resources.BG4,
+                Properties.Resources.BG5,
+                Properties.Resources.BG6,
+                Properties.Resources.BG7,
+                Properties.Resources.BG8
+
             };
 
             this.BackgroundImage = _background[0];
@@ -205,7 +210,7 @@ namespace iteration1
             // End game
             if ((_playerLivesLeft <= 0 )||( _currentWaveIndex == 6))
             {
-                game_Timer.Stop();
+                game_Timer.Stop(); 
                 GameOver();
             }
 

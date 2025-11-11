@@ -113,13 +113,13 @@ namespace iteration1
             enemies.RemoveAll(e => !e.IsAlive);  
             foreach(var bullet in EnemyBullets)
             {
-                bullet.PositionY += 5;
+                bullet.PositionY += 3;
             }
             EnemyBullets.RemoveAll(b => b.PositionY > 600);
             foreach (var enemy in enemies)
             {
                 int shootChance = rnd.Next(0, 1000); // ~0.5% chance per update
-                if (shootChance < 5)
+                if (shootChance < 3)
                 {
                     Bullet newBullet = new Bullet(Properties.Resources.bulletImage___Copy, enemy.PositionX , enemy.PositionY);
                     EnemyBullets.Add(newBullet);
