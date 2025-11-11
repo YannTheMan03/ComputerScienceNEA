@@ -31,9 +31,10 @@ namespace iteration1
                 return;
             }
 
-            Username = textBox1.Text;
+            Username = textBox1.Text.Trim();
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
     }
 }
+ 
