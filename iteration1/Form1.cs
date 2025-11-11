@@ -48,6 +48,7 @@ namespace iteration1
         private Leaderboard _leaderboard = new();
         private static readonly string LeaderBoardPath
             = "C:\\Users\\yb.2415248\\OneDrive - Hereford Sixth Form College\\Computer Science\\C03 - Project\\Assets\\leaderboard.json";
+        private string _username;
 
         // Wave Variables
         private Wave currentWave;
@@ -61,9 +62,10 @@ namespace iteration1
 
    
         // Form Loading
-        public Form1()
+        public Form1(string username)
         {
             InitializeComponent();
+            _username = username;
             ChangeBackground();
             StartWave(_currentWaveIndex);
         }
@@ -275,7 +277,7 @@ namespace iteration1
             var topScores = _leaderboard.GetTopScores(5);
             string message = " Leaderboard: \n\n";
 
-            _leaderboard.AddOrUpdateScore("Player1", _scoreCount);
+            _leaderboard.AddOrUpdateScore(_username, _scoreCount);
             _leaderboard.Save(LeaderBoardPath);        
 
             foreach (var entry in topScores) message += $"{entry.Key}: {entry.Value} \n";
