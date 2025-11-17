@@ -15,7 +15,7 @@ namespace iteration1
         {
             if (_scores.ContainsKey(playersName))
             {
-                _scores[playersName] = Score;
+                _scores[playersName] = Math.Max(Score, _scores[playersName]);                  
             }
             else
             {

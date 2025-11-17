@@ -1,4 +1,4 @@
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 using System.Timers;
 using System.Windows.Forms.VisualStyles;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
@@ -221,7 +221,7 @@ namespace iteration1
             _disposedBullets.Clear();
 
             // Update Enemies
-            
+             
             if (currentWave != null){
                 currentWave.Update();
                 foreach (var bullet in _bullets.ToList())
@@ -278,11 +278,23 @@ namespace iteration1
             string message = " Leaderboard: \n\n";
 
             _leaderboard.AddOrUpdateScore(_username, _scoreCount);
-            _leaderboard.Save(LeaderBoardPath);        
+            _leaderboard.Save(LeaderBoardPath);
 
-            foreach (var entry in topScores) message += $"{entry.Key}: {entry.Value} \n";
+            int rank = 1;
+            foreach (var entry in topScores)
+            {
+                string medal = rank switch
+                {
+                    1 => "🏆",
+                    _ => "     "
+                };
+                message += $"{medal} {rank}. {entry.Key}: {entry.Value}\n";
+                rank++;
+            }
 
             MessageBox.Show(message, "Game Over");
+            
+            Thread.Sleep(1000);
             game_Timer.Stop();
             this.Close();
         }
