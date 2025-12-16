@@ -1,3 +1,3 @@
-# iteration1
+# iterations 1, 2 & 3
 
-- this is my iteration one for my computer science coursework A-Level NEA.
+- Iteration one is now complete and i can move onto interation 2
