@@ -26,7 +26,5 @@ namespace iteration1
         }
 
         public void Draw(Graphics g) { g.DrawImage(SpriteImage, PositionX, PositionY); }
-
-
     }
 }
