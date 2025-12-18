@@ -213,6 +213,16 @@ namespace iteration1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Galaga_logo_svg {
+            get {
+                object obj = ResourceManager.GetObject("Galaga_logo.svg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap heartPng {
             get {
                 object obj = ResourceManager.GetObject("heartPng", resourceCulture);

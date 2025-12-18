@@ -13,6 +13,7 @@ namespace iteration1
             ApplicationConfiguration.Initialize();
             using (var usernameForm = new LeaderboardForm())
             {
+                Application.Run(new menuForm());
                 // Wait for user input (ShowDialog pauses execution)
                 if (usernameForm.ShowDialog() == DialogResult.OK)
                 {
