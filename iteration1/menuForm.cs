@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 namespace iteration1
@@ -19,6 +21,12 @@ namespace iteration1
         private const int BackgroundChangeDelay = 500;
         private DateTime _lastBackgroundChange = DateTime.Now;
         private Font _font = new Font("Pixeloid Sans", 12);
+        public string Username { get; private set; }
+
+        private Leaderboard _leaderboard = new();
+        private static readonly string LeaderBoardPath
+            = "C:\\Users\\yb.2415248\\OneDrive - Hereford Sixth Form College\\Computer Science\\C03 - Project\\Assets\\leaderboard.json";
+
         public menuForm()
         {
             InitializeComponent();
@@ -37,6 +45,7 @@ namespace iteration1
             settingsButton.Font = _font;
             //leaderboardButton
             leaderBoardButton.Font = _font;
+            _leaderboard.Load(LeaderBoardPath);
 
             
         }
@@ -70,12 +79,20 @@ namespace iteration1
 
         private void playButton_Click(object sender, EventArgs e)
         {
-            
+            if (string.IsNullOrWhiteSpace(userNameBox.Text))
+            {
+                MessageBox.Show("Please Enter a username First");
+                return;
+            }
+
+            Username = userNameBox.Text.Trim();
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void leaderBoardButton_Click(object sender, EventArgs e)
         {
-
+            GameOver();
         }
 
         private void settingsButton_Click(object sender, EventArgs e)
@@ -86,6 +103,25 @@ namespace iteration1
         private void exitButton_Click(object sender, EventArgs e)
         {
 
+        }
+        private void GameOver()
+        {
+            var topScores = _leaderboard.GetTopScores(5);
+            string message = " Leaderboard: \n\n";
+
+            int rank = 1;
+            foreach (var entry in topScores)
+            {
+                string medal = rank switch
+                {
+                    1 => "🏆",
+                    _ => "     "
+                };
+                message += $"{medal} {rank}. {entry.Key}: {entry.Value}\n";
+                rank++;
+            }
+
+            MessageBox.Show(message, "Game Over");
         }
     }
 }

@@ -36,7 +36,7 @@
             leaderBoardButton = new Button();
             settingsButton = new Button();
             exitButton = new Button();
-            textBox1 = new TextBox();
+            userNameBox = new TextBox();
             label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -111,12 +111,12 @@
             exitButton.UseVisualStyleBackColor = false;
             exitButton.Click += exitButton_Click;
             // 
-            // textBox1
+            // userNameBox
             // 
-            textBox1.Location = new Point(167, 444);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 6;
+            userNameBox.Location = new Point(167, 444);
+            userNameBox.Name = "userNameBox";
+            userNameBox.Size = new Size(100, 23);
+            userNameBox.TabIndex = 6;
             // 
             // label2
             // 
@@ -134,7 +134,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(384, 561);
             Controls.Add(label2);
-            Controls.Add(textBox1);
+            Controls.Add(userNameBox);
             Controls.Add(exitButton);
             Controls.Add(settingsButton);
             Controls.Add(leaderBoardButton);
@@ -158,7 +158,7 @@
         private Button leaderBoardButton;
         private Button settingsButton;
         private Button exitButton;
-        private TextBox textBox1;
+        private TextBox userNameBox;
         private Label label2;
     }
 }
