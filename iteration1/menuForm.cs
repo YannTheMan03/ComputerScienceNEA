@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
+using static System.Windows.Forms.DataFormats;
 
 namespace iteration1
 {
@@ -97,7 +98,8 @@ namespace iteration1
 
         private void settingsButton_Click(object sender, EventArgs e)
         {
-
+            settingsForm sForm = new settingsForm();
+            sForm.ShowDialog();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
