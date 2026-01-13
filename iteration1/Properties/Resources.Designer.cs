@@ -63,6 +63,16 @@ namespace iteration1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _458595 {
+            get {
+                object obj = ResourceManager.GetObject("458595", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap backGround1 {
             get {
                 object obj = ResourceManager.GetObject("backGround1", resourceCulture);

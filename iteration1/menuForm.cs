@@ -39,6 +39,8 @@ namespace iteration1
             label2.Font = _font;
             label2.ForeColor = Color.White;
             label2.BackColor = Color.Transparent;
+            this.FormBorderStyle = FormBorderStyle.Fixed3D; 
+
 
             //playButton
             playButton.Font = _font;

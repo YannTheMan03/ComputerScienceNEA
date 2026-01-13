@@ -34,8 +34,8 @@
             label3 = new Label();
             label4 = new Label();
             button1 = new Button();
-            pictureBox1 = new PictureBox();
             button2 = new Button();
+            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -49,6 +49,7 @@
             trackBar1.TabIndex = 0;
             trackBar1.TabStop = false;
             trackBar1.TickFrequency = 0;
+            trackBar1.Scroll += volumeScroll;
             // 
             // label1
             // 
@@ -102,23 +103,24 @@
             button1.TabIndex = 6;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(92, 195);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(50, 50);
-            pictureBox1.TabIndex = 7;
-            pictureBox1.TabStop = false;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
-            button2.Location = new Point(50, 281);
+            button2.Location = new Point(36, 281);
             button2.Name = "button2";
             button2.Size = new Size(50, 50);
             button2.TabIndex = 8;
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(96, 195);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(50, 50);
+            pictureBox1.TabIndex = 9;
+            pictureBox1.TabStop = false;
             // 
             // settingsForm
             // 
@@ -126,8 +128,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(27, 27, 27);
             ClientSize = new Size(384, 561);
-            Controls.Add(button2);
             Controls.Add(pictureBox1);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -151,7 +153,7 @@
         private Label label3;
         private Label label4;
         private Button button1;
-        private PictureBox pictureBox1;
         private Button button2;
+        private PictureBox pictureBox1;
     }
 }

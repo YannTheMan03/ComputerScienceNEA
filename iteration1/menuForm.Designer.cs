@@ -113,7 +113,7 @@
             // 
             // userNameBox
             // 
-            userNameBox.Location = new Point(167, 444);
+            userNameBox.Location = new Point(167, 247);
             userNameBox.Name = "userNameBox";
             userNameBox.Size = new Size(100, 23);
             userNameBox.TabIndex = 6;
@@ -122,7 +122,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F);
-            label2.Location = new Point(107, 444);
+            label2.Location = new Point(116, 247);
             label2.Name = "label2";
             label2.Size = new Size(45, 21);
             label2.TabIndex = 7;

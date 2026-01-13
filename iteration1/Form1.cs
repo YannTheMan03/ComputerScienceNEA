@@ -196,12 +196,7 @@ namespace iteration1
         
         private void OnGameTick(object sender, EventArgs e)
         {
-            // Clear Memory (128 ticks)
-            if (++_gcCount == 128)
-            {
-                GC.Collect();
-                _gcCount = 0;
-            }
+            
             // Player movement
             if (_isMovingLeft && _player.PositionX > 7) _player.PositionX -= 7;
             if (_isMovingRight && _player.PositionX < _formBounds.Width - _player.SpriteImage.Width) _player.PositionX += 7;
