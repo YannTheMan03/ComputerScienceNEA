@@ -44,12 +44,20 @@ namespace iteration1
 
             //playButton
             playButton.Font = _font;
+            playButton.FlatStyle = FlatStyle.Flat;
             //settingsButton
             settingsButton.Font = _font;
+            settingsButton.FlatStyle = FlatStyle.Flat;
             //leaderboardButton
             leaderBoardButton.Font = _font;
+            leaderBoardButton.FlatStyle= FlatStyle.Flat;
             _leaderboard.Load(LeaderBoardPath);
 
+            exitButton.Font = _font;
+            exitButton.FlatStyle = FlatStyle.Flat;
+
+            userNameBox.BorderStyle = BorderStyle.Fixed3D; 
+            userNameBox.Font = _font;
             
         }
         void changingMenuBG()
@@ -106,7 +114,7 @@ namespace iteration1
 
         private void exitButton_Click(object sender, EventArgs e)
         {
-
+            Application.Exit();
         }
         private void GameOver()
         {

@@ -213,6 +213,16 @@ namespace iteration1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap checkmark_xxl {
+            get {
+                object obj = ResourceManager.GetObject("checkmark-xxl", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap enemyPng {
             get {
                 object obj = ResourceManager.GetObject("enemyPng", resourceCulture);
@@ -256,6 +266,16 @@ namespace iteration1.Properties {
         internal static System.Drawing.Bitmap player_one {
             get {
                 object obj = ResourceManager.GetObject("player one", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap x_mark_xxl {
+            get {
+                object obj = ResourceManager.GetObject("x-mark-xxl", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

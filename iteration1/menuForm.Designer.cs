@@ -59,7 +59,7 @@
             // 
             pictureBox1.BackColor = Color.Transparent;
             pictureBox1.Image = Properties.Resources.Galaga_logo_svg;
-            pictureBox1.Location = new Point(40, 12);
+            pictureBox1.Location = new Point(34, 45);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(314, 164);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -69,40 +69,47 @@
             // playButton
             // 
             playButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            playButton.BackColor = Color.FromArgb(26, 26, 26);
             playButton.Font = new Font("Segoe UI", 15F);
+            playButton.ForeColor = Color.White;
             playButton.Location = new Point(117, 276);
             playButton.Name = "playButton";
             playButton.Size = new Size(150, 50);
             playButton.TabIndex = 2;
             playButton.Text = "Play";
-            playButton.UseVisualStyleBackColor = true;
+            playButton.UseVisualStyleBackColor = false;
             playButton.Click += playButton_Click;
             // 
             // leaderBoardButton
             // 
+            leaderBoardButton.BackColor = Color.FromArgb(26, 26, 26);
             leaderBoardButton.Font = new Font("Segoe UI", 15F);
+            leaderBoardButton.ForeColor = Color.White;
             leaderBoardButton.Location = new Point(117, 332);
             leaderBoardButton.Name = "leaderBoardButton";
             leaderBoardButton.Size = new Size(150, 50);
             leaderBoardButton.TabIndex = 3;
             leaderBoardButton.Text = "Leaderboard";
-            leaderBoardButton.UseVisualStyleBackColor = true;
+            leaderBoardButton.UseVisualStyleBackColor = false;
             leaderBoardButton.Click += leaderBoardButton_Click;
             // 
             // settingsButton
             // 
+            settingsButton.BackColor = Color.FromArgb(26, 26, 26);
             settingsButton.Font = new Font("Segoe UI", 15F);
+            settingsButton.ForeColor = Color.White;
             settingsButton.Location = new Point(117, 388);
             settingsButton.Name = "settingsButton";
             settingsButton.Size = new Size(150, 50);
             settingsButton.TabIndex = 4;
             settingsButton.Text = "Settings";
-            settingsButton.UseVisualStyleBackColor = true;
+            settingsButton.UseVisualStyleBackColor = false;
             settingsButton.Click += settingsButton_Click;
             // 
             // exitButton
             // 
-            exitButton.BackColor = Color.Red;
+            exitButton.BackColor = Color.FromArgb(27, 27, 27);
+            exitButton.ForeColor = Color.White;
             exitButton.Location = new Point(322, 499);
             exitButton.Name = "exitButton";
             exitButton.Size = new Size(50, 50);
@@ -113,7 +120,9 @@
             // 
             // userNameBox
             // 
-            userNameBox.Location = new Point(167, 247);
+            userNameBox.BackColor = Color.FromArgb(26, 26, 26);
+            userNameBox.ForeColor = Color.White;
+            userNameBox.Location = new Point(167, 244);
             userNameBox.Name = "userNameBox";
             userNameBox.Size = new Size(100, 23);
             userNameBox.TabIndex = 6;
@@ -122,7 +131,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F);
-            label2.Location = new Point(116, 247);
+            label2.Location = new Point(107, 245);
             label2.Name = "label2";
             label2.Size = new Size(45, 21);
             label2.TabIndex = 7;
