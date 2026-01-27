@@ -59,6 +59,7 @@ namespace iteration1
         private bool _isMovingLeft;
         private bool _isMovingRight;
         private bool _isPressingSpace;
+        private bool _menuOpen = false;
 
    
         // Form Loading
@@ -121,6 +122,13 @@ namespace iteration1
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             // Check Keys
+            if (e.KeyCode == Keys.Escape)
+            {
+                _menuOpen = true; 
+                game_Timer.Stop();
+                pauseMenu pause = new pauseMenu(_scoreCount);
+                pause.Show();
+            }
             if (e.KeyCode == Keys.Left) _isMovingLeft = true;
             if (e.KeyCode == Keys.Right) _isMovingRight = true;
             if (e.KeyCode == Keys.Space && _isPressingSpace == false)
@@ -187,16 +195,12 @@ namespace iteration1
                     _playerLivesLeft -= 1;
                 }
                 currentWave?.Draw(G);
-            }
-            
- 
-
-
+            }          
         }
         
         private void OnGameTick(object sender, EventArgs e)
         {
-            
+             
             // Player movement
             if (_isMovingLeft && _player.PositionX > 7) _player.PositionX -= 7;
             if (_isMovingRight && _player.PositionX < _formBounds.Width - _player.SpriteImage.Width) _player.PositionX += 7;

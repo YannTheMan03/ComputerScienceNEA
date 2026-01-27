@@ -36,6 +36,7 @@ namespace iteration1
 
         private void menuForm_Load(object sender, EventArgs e)
         {
+             this.MaximizeBox = false; 
             label2.Font = _font;
             label2.ForeColor = Color.White;
             label2.BackColor = Color.Transparent;
