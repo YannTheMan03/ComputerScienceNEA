@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Reflection.Metadata.Ecma335;
 namespace iteration1
 {
     /// <summary>
@@ -32,8 +33,14 @@ namespace iteration1
         private DateTime _lastShot = DateTime.MinValue;
         private const int FireDelay = 200;
 
-        // Enemy Variables
-        
+        // PowerUp variables
+        public int dmgLevel = 0;
+        public int powerLevel = 0;
+        public int speedLevel = 0;
+        private Random randNum = new Random();
+        private List<powerUp> _activePowerups = new List<powerUp>();
+
+
 
         // User Interface Variables
         private Label _scoreLabel = new();
@@ -156,73 +163,58 @@ namespace iteration1
 
         private void OnPaint(object sender, PaintEventArgs e)
         {
-            // Creating Pen/Graphics
+            // Creating Graphics
             Graphics G = e.Graphics;
-            Pen Pen = new Pen(Color.Red);
 
             // Draw Player
             G.DrawImage(_player.SpriteImage, _player.PositionX, _player.PositionY);
 
-            // Draw Hearts
-            if (_playerLivesLeft != 0)
+            // Draw Hearts (lives)
+            if (_playerLivesLeft > 0)
             {
-                for (int i = 1; i <= _playerLivesLeft; i++)
+                for (int i = 0; i < _playerLivesLeft; i++)
                 {
-                    G.DrawImage(Properties.Resources.heartPng, _livesSpacing, 0);
-                    _livesSpacing += 30;
+                    G.DrawImage(Properties.Resources.heartPng, i * 30, 0);
                 }
-                _livesSpacing = 0;
             }
-            
-            // Draw Bullets
-            if (_bullets.Count > 0){
-                foreach (Bullet bullet in _bullets)
-                {
-                    if ((bullet.HitBox).IntersectsWith(_formBounds)) G.DrawImage(bullet.SpriteImage, bullet.PositionX, bullet.PositionY);
-                    else _disposedBullets.Add(bullet);
-                }
-                foreach (Bullet bullet in _disposedBullets) _bullets.Remove(bullet);
 
-                _disposedBullets.Clear();
+            // Draw Bullets
+            foreach (Bullet bullet in _bullets)
+            {
+                G.DrawImage(bullet.SpriteImage, bullet.PositionX, bullet.PositionY);
             }
 
             // Draw Enemies
-            foreach (var enemy in currentWave.enemies.ToList())
+            currentWave?.Draw(G);
+
+            // Draw Active Powerups
+            foreach (var powerup in _activePowerups)
             {
-                if ((enemy.HitBox.IntersectsWith(_player.HitBox))||(enemy.PositionY >550))
-                {
-                    currentWave.enemies.Remove(enemy);
-                    _playerLivesLeft -= 1;
-                }
-                currentWave?.Draw(G);
-            }          
+                G.DrawImage(powerup.SpriteImage, powerup.PositionX, powerup.PositionY);
+            }
         }
-        
+
         private void OnGameTick(object sender, EventArgs e)
         {
-             
             // Player movement
-            if (_isMovingLeft && _player.PositionX > 7) _player.PositionX -= 7;
-            if (_isMovingRight && _player.PositionX < _formBounds.Width - _player.SpriteImage.Width) _player.PositionX += 7;
+            if (_isMovingLeft && _player.PositionX > 7)
+                _player.PositionX -= 7;
+            if (_isMovingRight && _player.PositionX < _formBounds.Width - _player.SpriteImage.Width)
+                _player.PositionX += 7;
 
             // Update bullet positions
-            foreach (Bullet bullet in _bullets) bullet.PositionY += BulletVelocity;
+            foreach (Bullet bullet in _bullets)
+                bullet.PositionY += BulletVelocity;
 
-            // End game
-            if ((_playerLivesLeft <= 0 )||( _currentWaveIndex == 6))
+            // Remove bullets that are off-screen
+            _bullets.RemoveAll(bullet => !bullet.HitBox.IntersectsWith(_formBounds));
+
+            // Update Enemies and Wave
+            if (currentWave != null)
             {
-                game_Timer.Stop(); 
-                GameOver();
-            }
-
-            // Remove Bullets
-            foreach (Bullet bullet in _disposedBullets) _bullets.Remove(bullet);
-            _disposedBullets.Clear();
-
-            // Update Enemies
-             
-            if (currentWave != null){
                 currentWave.Update();
+
+                // Handle bullet-enemy collisions
                 foreach (var bullet in _bullets.ToList())
                 {
                     foreach (var enemy in currentWave.enemies.ToList())
@@ -232,13 +224,39 @@ namespace iteration1
                             enemy.TakeDamage(BulletDamage);
                             _bullets.Remove(bullet);
                             _scoreCount += 10;
+
+                            // Enemy died - handle death
+                            if (enemy.Health <= 0)
+                            {
+                                currentWave.enemies.Remove(enemy);
+
+                                // Spawn powerup when enemy dies
+                                powerUp newPowerup = spawnPowerup(powerLevel, speedLevel, dmgLevel,
+                                    enemy.PositionX, enemy.PositionY);
+                                if (newPowerup != null)
+                                {
+                                    _activePowerups.Add(newPowerup);
+                                }
+                            }
                             break;
                         }
                     }
                 }
+
+                // Handle enemy-player collisions
+                foreach (var enemy in currentWave.enemies.ToList())
+                {
+                    if (enemy.HitBox.IntersectsWith(_player.HitBox) || enemy.PositionY > 550)
+                    {
+                        currentWave.enemies.Remove(enemy);
+                        _playerLivesLeft -= 1;
+                    }
+                }
+
+                // Handle enemy bullets
                 foreach (var enemyBullet in currentWave.EnemyBullets.ToList())
                 {
-                    enemyBullet.PositionY += 2; 
+                    enemyBullet.PositionY += 2;
 
                     if (enemyBullet.HitBox.IntersectsWith(_player.HitBox))
                     {
@@ -250,10 +268,42 @@ namespace iteration1
                         currentWave.EnemyBullets.Remove(enemyBullet);
                     }
                 }
+
+                // Check if wave is complete
                 if (currentWave.enemies.Count == 0)
                 {
                     _currentWaveIndex++;
                     StartWave(_currentWaveIndex);
+                }
+            }
+
+            // Update Powerups
+            foreach (var powerup in _activePowerups.ToList())
+            {
+                powerup.PositionY += 3; // Make them fall
+
+                // Check collision with player
+                if (powerup.HitBox.IntersectsWith(_player.HitBox))
+                {
+                    // Apply powerup effect based on type
+                    switch (powerup.identifier)
+                    {
+                        case 1: // power
+                            powerLevel++;
+                            break;
+                        case 2: // speed
+                            speedLevel++;
+                            break;
+                        case 3: // damage
+                            dmgLevel++;
+                            break;
+                    }
+                    _activePowerups.Remove(powerup);
+                }
+                // Remove if off screen
+                else if (powerup.PositionY > _formBounds.Height)
+                {
+                    _activePowerups.Remove(powerup);
                 }
             }
 
@@ -264,7 +314,16 @@ namespace iteration1
                 this.BackgroundImage = _background[_currentImageIndex];
                 _lastBackgroundChange = DateTime.Now;
             }
+
+            // Update score display
             _scoreLabel.Text = _scoreCount.ToString();
+
+            // Check game over conditions
+            if ((_playerLivesLeft <= 0) || (_currentWaveIndex == 6))
+            {
+                game_Timer.Stop();
+                GameOver();
+            }
 
             // Redraw Screen
             this.Invalidate();
@@ -302,6 +361,58 @@ namespace iteration1
         {
             currentWave = new Wave(_currentWaveIndex);
             this.Invalidate();
-        }               
+        }
+
+        private powerUp spawnPowerup(int powerLevel, int speedLevel, int damageLevel, int enemyX, int enemyY)
+        {
+            if (randNum.Next(1, 101) > 90)
+                return null;
+
+            int type = randNum.Next(1, 4); 
+            switch (type)
+            {
+                case 1: //power
+                    return new powerUp(
+                        Properties.Resources.pixil_frame_0__1_,
+                        enemyX,
+                        enemyY,
+                        1,  // ← Changed: always worth 1 level
+                        1
+                    );
+                case 2: //speed
+                    return new powerUp(
+                        Properties.Resources.pixil_frame_0__2_,
+                        enemyX,
+                        enemyY,
+                        1,  // ← Changed: always worth 1 level
+                        2
+                    );
+                case 3: // damage
+                    Bitmap sprite;
+                    switch (damageLevel)
+                    {
+                        case 0:
+                            sprite = Properties.Resources.pixil_frame_0__3_;
+                            break;
+                        case 1:
+                            sprite = Properties.Resources.pixil_frame_0__4_;
+                            break;
+                        case 2:
+                            sprite = Properties.Resources.pixil_frame_0__5_;
+                            break;
+                        default:
+                            sprite = Properties.Resources.pixil_frame_0__3_;
+                            break;
+                    }
+                    return new powerUp(
+                        sprite,
+                        enemyX,
+                        enemyY,
+                        1,  // ← Changed: always worth 1 level
+                        3
+                    );
+            }
+            return null;
+        }
     }
 }
