@@ -11,22 +11,14 @@ namespace iteration1
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            using (var usernameForm = new LeaderboardForm())
+            using (var menuForm = new menuForm())
             {
-                // Wait for user input (ShowDialog pauses execution)
-                if (usernameForm.ShowDialog() == DialogResult.OK)
+                if (menuForm.ShowDialog() == DialogResult.OK)
                 {
-                    // Get the entered username
-                    string username = usernameForm.Username;
-
-                    // Now launch the main game form and pass the username
+                    string username = menuForm.Username;
                     Application.Run(new Form1(username));
                 }
-                else
-                {
-                    // If user closes the username form or cancels, just exit
-                    return;
-                }
+                else return;
             }
         }
     }  
