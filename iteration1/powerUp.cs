@@ -17,7 +17,7 @@ namespace iteration1
         {
             level = plevel;
             identifier = pIndentifier;
-            boost = 1;  // Set the boost value (could make this a parameter too)
+            boost = 1;  
         }
 
         public void Draw(Graphics g)

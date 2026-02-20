@@ -63,6 +63,26 @@ namespace iteration1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _210_2102512_galaga_boss_png_transparent_png_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("210-2102512_galaga-boss-png-transparent-png-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _210_2102512_galaga_boss_png_transparent_png_removebg_preview1 {
+            get {
+                object obj = ResourceManager.GetObject("210-2102512_galaga-boss-png-transparent-png-removebg-preview1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _458595 {
             get {
                 object obj = ResourceManager.GetObject("458595", resourceCulture);

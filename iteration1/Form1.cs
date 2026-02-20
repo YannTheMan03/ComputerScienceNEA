@@ -37,6 +37,7 @@ namespace iteration1
         public int dmgLevel = 0;
         public int powerLevel = 0;
         public int speedLevel = 0;
+        private const int maxLevel = 3;
         private Random randNum = new Random();
         private List<powerUp> _activePowerups = new List<powerUp>();
 
@@ -44,6 +45,9 @@ namespace iteration1
 
         // User Interface Variables
         private Label _scoreLabel = new();
+        private Label _powerLevelLabel = new();
+        private Label _speedLevelLabel = new();
+        private Label _damageLevelLabel = new();
         private Rectangle _formBounds;
         private Image[] _background;
         private int _currentImageIndex = 0;
@@ -51,11 +55,11 @@ namespace iteration1
         private const int BackgroundChangeDelay = 500;
         private DateTime _lastBackgroundChange = DateTime.Now;
 
+
         // Leaderboard Variables
         private Leaderboard _leaderboard = new();
         private static readonly string LeaderBoardPath
-            = "C:\\Users\\yb.2415248\\OneDrive - Hereford Sixth Form College\\Computer Science\\C03 - Project\\Assets\\leaderboard.json";
-        private string _username;
+            = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "leaderboard.json");        private string _username;
 
         // Wave Variables
         private Wave currentWave;
@@ -123,6 +127,35 @@ namespace iteration1
             _scoreLabel.Font = new Font("Pixeloid Sans", 14);
             _scoreLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Controls.Add(_scoreLabel);
+            // Power Level Label
+            _powerLevelLabel.Text = "PWR: 0";
+            _powerLevelLabel.Visible = true;
+            _powerLevelLabel.Location = new System.Drawing.Point(5, this.ClientSize.Height - 70);
+            _powerLevelLabel.BackColor = System.Drawing.Color.Transparent;
+            _powerLevelLabel.ForeColor = System.Drawing.Color.Red;
+            _powerLevelLabel.Font = new Font("Pixeloid Sans", 10);
+            _powerLevelLabel.AutoSize = true;
+            this.Controls.Add(_powerLevelLabel);
+
+            // Speed Level Label
+            _speedLevelLabel.Text = "SPD: 0";
+            _speedLevelLabel.Visible = true;
+            _speedLevelLabel.Location = new System.Drawing.Point(5, this.ClientSize.Height - 50);
+            _speedLevelLabel.BackColor = System.Drawing.Color.Transparent;
+            _speedLevelLabel.ForeColor = System.Drawing.Color.Blue;
+            _speedLevelLabel.Font = new Font("Pixeloid Sans", 10);
+            _speedLevelLabel.AutoSize = true;
+            this.Controls.Add(_speedLevelLabel);
+
+            // Damage Level Label
+            _damageLevelLabel.Text = "MULT: 0";
+            _damageLevelLabel.Visible = true;
+            _damageLevelLabel.Location = new System.Drawing.Point(5, this.ClientSize.Height - 30);
+            _damageLevelLabel.BackColor = System.Drawing.Color.Transparent;
+            _damageLevelLabel.ForeColor = System.Drawing.Color.Green;
+            _damageLevelLabel.Font = new Font("Pixeloid Sans", 10);
+            _damageLevelLabel.AutoSize = true;
+            this.Controls.Add(_damageLevelLabel);
         }
 
         // Key Pressing
@@ -145,8 +178,18 @@ namespace iteration1
                 // Firing Delay
                 if ((DateTime.Now - _lastShot).TotalMilliseconds > FireDelay)
                 {
-                    _bullet = new Bullet(Properties.Resources.bulletImage, _player.PositionX + 17, _player.PositionY);
-                    _bullets.Add(_bullet);
+                    int bulletsToFire = powerLevel + 1;
+
+                    int totalWidth = _player.SpriteImage.Width;
+                    int spacing = bulletsToFire > 1 ? totalWidth / (bulletsToFire + 1) : totalWidth / 2;
+
+                    for (int i = 0; i < bulletsToFire; i++)
+                    {
+                        int bulletX = _player.PositionX + spacing * (i + 1) - 5;
+                        _bullet = new Bullet(Properties.Resources.bulletImage, bulletX, _player.PositionY);
+                        _bullets.Add(_bullet);
+                    }
+
                     _lastShot = DateTime.Now;
                 }
             }
@@ -196,11 +239,13 @@ namespace iteration1
 
         private void OnGameTick(object sender, EventArgs e)
         {
+            const int BasePlayerSpeed = 7;
+            int playerSpeed = BasePlayerSpeed + (speedLevel * 3);
             // Player movement
-            if (_isMovingLeft && _player.PositionX > 7)
-                _player.PositionX -= 7;
+            if (_isMovingLeft && _player.PositionX > playerSpeed)
+                _player.PositionX -= playerSpeed;
             if (_isMovingRight && _player.PositionX < _formBounds.Width - _player.SpriteImage.Width)
-                _player.PositionX += 7;
+                _player.PositionX += playerSpeed;
 
             // Update bullet positions
             foreach (Bullet bullet in _bullets)
@@ -221,13 +266,21 @@ namespace iteration1
                     {
                         if (bullet.HitBox.IntersectsWith(enemy.HitBox))
                         {
-                            enemy.TakeDamage(BulletDamage);
+                            int damageMultiplier = dmgLevel + 1;
+                            int totalDamage = BulletDamage * damageMultiplier;
+
+                            enemy.TakeDamage(totalDamage);
                             _bullets.Remove(bullet);
-                            _scoreCount += 10;
+                            
 
                             // Enemy died - handle death
                             if (enemy.Health <= 0)
                             {
+                                if (_currentWaveIndex == 6)
+                                {
+                                    _scoreCount += 500;
+                                }
+                                _scoreCount += 50;
                                 currentWave.enemies.Remove(enemy);
 
                                 // Spawn powerup when enemy dies
@@ -269,10 +322,17 @@ namespace iteration1
                     }
                 }
 
+                
                 // Check if wave is complete
                 if (currentWave.enemies.Count == 0)
                 {
                     _currentWaveIndex++;
+                    if (_currentWaveIndex == 7)
+                    {
+                        game_Timer.Stop();
+                        GameOver();
+                        return; // Don't continue the game tick
+                    }
                     StartWave(_currentWaveIndex);
                 }
             }
@@ -289,13 +349,27 @@ namespace iteration1
                     switch (powerup.identifier)
                     {
                         case 1: // power
-                            powerLevel++;
+                            if (powerLevel < maxLevel)
+                            {
+                                powerLevel++;
+                                _powerLevelLabel.Text = $"PWR: {powerLevel}";
+                                
+                            }
                             break;
+                            
                         case 2: // speed
-                            speedLevel++;
+                            if (speedLevel < maxLevel)
+                            {
+                                speedLevel++;
+                                _speedLevelLabel.Text = $"SPD: {speedLevel}";
+                            }
                             break;
                         case 3: // damage
-                            dmgLevel++;
+                            if (dmgLevel < maxLevel)
+                            {
+                                dmgLevel++;
+                                _damageLevelLabel.Text = $"DMG: {dmgLevel}";
+                            }                          
                             break;
                     }
                     _activePowerups.Remove(powerup);
@@ -319,7 +393,7 @@ namespace iteration1
             _scoreLabel.Text = _scoreCount.ToString();
 
             // Check game over conditions
-            if ((_playerLivesLeft <= 0) || (_currentWaveIndex == 6))
+            if ((_playerLivesLeft <= 0) || (_currentWaveIndex == 7))
             {
                 game_Timer.Stop();
                 GameOver();
@@ -332,12 +406,10 @@ namespace iteration1
         // End Game
         private void GameOver()
         {
-            var topScores = _leaderboard.GetTopScores(5);
-            string message = " Leaderboard: \n\n";
-
             _leaderboard.AddOrUpdateScore(_username, _scoreCount);
             _leaderboard.Save(LeaderBoardPath);
-
+            var topScores = _leaderboard.GetTopScores(5);
+            string message = " Leaderboard: \n\n";                       
             int rank = 1;
             foreach (var entry in topScores)
             {
@@ -361,22 +433,32 @@ namespace iteration1
         {
             currentWave = new Wave(_currentWaveIndex);
             this.Invalidate();
-        }
+        } 
 
         private powerUp spawnPowerup(int powerLevel, int speedLevel, int damageLevel, int enemyX, int enemyY)
         {
-            if (randNum.Next(1, 101) > 90)
+            if (randNum.Next(1, 101) > 40) 
+                return null;
+            
+            List<int> availableTypes = new List<int>();
+            if (powerLevel < maxLevel) availableTypes.Add(1);
+            if (speedLevel < maxLevel) availableTypes.Add(2);
+            if (damageLevel < maxLevel) availableTypes.Add(3);
+
+            // If all powerups are maxed, don't spawn anything
+            if (availableTypes.Count == 0)
                 return null;
 
-            int type = randNum.Next(1, 4); 
-            switch (type)
+            // Pick a random type from available ones only
+            int type = availableTypes[randNum.Next(availableTypes.Count)];
+             switch (type)
             {
                 case 1: //power
                     return new powerUp(
                         Properties.Resources.pixil_frame_0__1_,
                         enemyX,
                         enemyY,
-                        1,  // ← Changed: always worth 1 level
+                        1,  
                         1
                     );
                 case 2: //speed
@@ -384,12 +466,12 @@ namespace iteration1
                         Properties.Resources.pixil_frame_0__2_,
                         enemyX,
                         enemyY,
-                        1,  // ← Changed: always worth 1 level
+                        1,  
                         2
                     );
                 case 3: // damage
                     Bitmap sprite;
-                    switch (damageLevel)
+                    switch (damageLevel) 
                     {
                         case 0:
                             sprite = Properties.Resources.pixil_frame_0__3_;
@@ -405,10 +487,10 @@ namespace iteration1
                             break;
                     }
                     return new powerUp(
-                        sprite,
+                        sprite, 
                         enemyX,
                         enemyY,
-                        1,  // ← Changed: always worth 1 level
+                        1,  
                         3
                     );
             }

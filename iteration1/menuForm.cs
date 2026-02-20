@@ -26,7 +26,7 @@ namespace iteration1
 
         private Leaderboard _leaderboard = new();
         private static readonly string LeaderBoardPath
-            = "C:\\Users\\yb.2415248\\OneDrive - Hereford Sixth Form College\\Computer Science\\C03 - Project\\Assets\\leaderboard.json";
+            = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "leaderboard.json");
 
         public menuForm()
         {
